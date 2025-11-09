@@ -1,0 +1,36 @@
+{% extends 'home.html'%}
+
+{% block content %}
+
+<main> 
+    <h1> Usuarios </h1>
+
+    <div>
+        <table> 
+            <thead>
+                <tr>Nombre</tr>
+                <tr>Apellido</tr>
+                <tr>Edad</tr>
+                <tr>Email</tr>
+                <tr>Telefono</tr>
+            </thead>
+            <tbody>
+                {% for u in usuarios %}
+                <tr>
+                    <td>{{u.first_name}}</td>
+                    <td>{{u.last_name}}</td>
+                    <td>{{u.edad}}</td>
+                    <td>{{u.email}}</td>
+                    <td>{{u.telefono}}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <p> No hay usuarios :CCC </p>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+
+{% endblock %}
