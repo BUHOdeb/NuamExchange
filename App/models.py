@@ -6,7 +6,6 @@ from django.utils import timezone
 class Usuario(models.Model):
     
     first_name = models.CharField(max_length=100)
-    sas_name = models.CharField(max_length=100)
 
     last_name = models.CharField(max_length=100)
     
@@ -60,4 +59,22 @@ class ImportAudit(models.Model):
 
     def __str__(self):
         return f"Import {self.id} by {self.user} on {self.uploaded_at.date()} ({self.status})"
+    
+class UsuarioHistorico(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='historicos')
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    edad = models.PositiveIntegerField(null=True, blank=True)
+    email = models.EmailField(max_length=254)
+    telefono = models.CharField(max_length=30, blank=True, null=True)
+    fecha_nacimiento = models.DateField(null=True, blank=True)
+    modified_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-modified_at']
+        verbose_name = "Histórico de Usuario"
+        verbose_name_plural = "Históricos de Usuarios"
+
+    def __str__(self):
+        return f"Histórico de {self.usuario} modificado en {self.modified_at}"
 

@@ -610,7 +610,10 @@
     <div class="container">
         <!-- UPLOAD SECTION -->
         <div class="upload-section">
-            <h2>📁 Cargar Archivos Excel</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="margin: 0;">📁 Cargar Archivos Excel</h2>
+                <a href="/plantilla/" class="btn btn-secondary" style="text-decoration: none;">⬇️ Descargar Plantilla</a>
+            </div>
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📊</div>
                 <h3>Arrastra tu archivo Excel aquí</h3>
@@ -665,7 +668,7 @@
                 <div class="card-icon">📋</div>
                 <h3>Listar Registros</h3>
                 <p>Visualiza todos los registros de tu base de datos con opciones de filtrado y búsqueda avanzada.</p>
-                <a href="{% url 'listar_usuarios' %}" class="card-link">Ver registros →</a>
+                <a href="#" class="card-link">Ver registros →</a>
             </div>
 
             <div class="card">
@@ -846,29 +849,99 @@
             fileInput.value = '';
         });
 
-        processBtn.addEventListener('click', () => {
+        processBtn.addEventListener('click', async () => {
             if (selectedFiles.length === 0) return;
 
             processingIndicator.classList.add('active');
-            let progress = 0;
+            progressFill.style.width = '0%';
 
-            const interval = setInterval(() => {
-                progress += 10;
-                progressFill.style.width = progress + '%';
+            // Procesar cada archivo
+            let totalCreados = 0;
+            let totalActualizados = 0;
+            let todosErrores = [];
 
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        alert('¡Archivos procesados exitosamente! ✅\n\nEn una aplicación real, aquí se enviarían los archivos al servidor Django.');
-                        processingIndicator.classList.remove('active');
-                        progressFill.style.width = '0%';
-                        selectedFiles = [];
-                        fileInfo.classList.remove('active');
-                        fileInput.value = '';
-                    }, 500);
+            for (let i = 0; i < selectedFiles.length; i++) {
+                const file = selectedFiles[i];
+                const formData = new FormData();
+                formData.append('file', file);
+
+                try {
+                    // Obtener CSRF token
+                    const csrftoken = getCookie('csrftoken');
+
+                    const response = await fetch('/upload-excel/', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': csrftoken
+                        }
+                    });
+
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        totalCreados += result.data.creados;
+                        totalActualizados += result.data.actualizados;
+                        todosErrores = [...todosErrores, ...result.data.errores];
+                    } else {
+                        todosErrores.push(`${file.name}: ${result.message}`);
+                    }
+
+                } catch (error) {
+                    todosErrores.push(`${file.name}: Error de conexión`);
                 }
-            }, 300);
+
+                // Actualizar progreso
+                const progress = ((i + 1) / selectedFiles.length) * 100;
+                progressFill.style.width = progress + '%';
+            }
+
+            // Mostrar resultados
+            setTimeout(() => {
+                let mensaje = `✅ Proceso completado!\n\n`;
+                mensaje += `📊 Usuarios creados: ${totalCreados}\n`;
+                mensaje += `🔄 Usuarios actualizados: ${totalActualizados}\n`;
+                
+                if (todosErrores.length > 0) {
+                    mensaje += `\n⚠️ Errores encontrados:\n`;
+                    todosErrores.slice(0, 5).forEach(error => {
+                        mensaje += `- ${error}\n`;
+                    });
+                    if (todosErrores.length > 5) {
+                        mensaje += `... y ${todosErrores.length - 5} errores más`;
+                    }
+                }
+
+                alert(mensaje);
+                
+                processingIndicator.classList.remove('active');
+                progressFill.style.width = '0%';
+                selectedFiles = [];
+                fileInfo.classList.remove('active');
+                fileInput.value = '';
+
+                // Recargar la página para ver los nuevos usuarios
+                if (totalCreados > 0 || totalActualizados > 0) {
+                    location.reload();
+                }
+            }, 500);
         });
+
+        // Función para obtener CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
     </script>
 </body>
 </html>
