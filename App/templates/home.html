@@ -608,6 +608,7 @@
 
     <!-- MAIN CONTENT -->
     <div class="container">
+        {% block content %}
         <!-- UPLOAD SECTION -->
         <div class="upload-section">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
@@ -638,6 +639,7 @@
                 </div>
             </div>
         </div>
+        {% endblock %}
 
         <!-- STATS -->
         <div class="stats">
@@ -668,7 +670,7 @@
                 <div class="card-icon">📋</div>
                 <h3>Listar Registros</h3>
                 <p>Visualiza todos los registros de tu base de datos con opciones de filtrado y búsqueda avanzada.</p>
-                <a href="#" class="card-link">Ver registros →</a>
+                <a href="{% url 'listar_usuarios'%}" class="card-link">Ver registros →</a>
             </div>
 
             <div class="card">
