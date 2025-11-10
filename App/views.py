@@ -6,7 +6,6 @@ from .models import Usuario, ImportAudit, UsuarioHistorico
 import pandas as pd
 import io
 from datetime import datetime
-from django.contrib import messages
 
 def home(request):
     # Obtener estadísticas para la home
@@ -54,39 +53,6 @@ def crear_usuario(request):
         )
 
     return render(request, 'crear.html')
-
-
-
-def editar_datos(request, pk):
-    usuario = get_object_or_404(Usuario, pk=pk)
-
-    if request.method == 'POST':
-        nombre = request.POST.get('first_name')
-        apellido = request.POST.get('last_name')
-        edad = request.POST.get('edad')
-        email = request.POST.get('email')
-        telefono = request.POST.get('telefono')
-        fecha_nacimiento = request.POST.get('fecha_nacimiento')
-
-        if not nombre or not apellido or not email:
-            messages.error(request, 'Los campos Nombre, Apellido y Email son obligatorios.')
-        else:
-            try:
-                usuario.first_name = nombre
-                usuario.last_name = apellido
-                usuario.edad = int(edad) if edad else None
-                usuario.email = email
-                usuario.telefono = telefono if telefono else None
-                usuario.fecha_nacimiento = fecha_nacimiento if fecha_nacimiento else None
-
-                usuario.save()
-                messages.success(request, f'Datos de {usuario.first_name} {usuario.last_name} actualizados correctamente.')
-                return redirect('listar_usuarios')
-            except Exception as e:
-                messages.error(request, f'Error al guardar los cambios: {e}')
-
-    context = {'usuario': usuario}
-    return render(request, 'editar.html', context)
 
 
 class UploadExcelView(View):

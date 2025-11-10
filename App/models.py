@@ -5,9 +5,9 @@ from django.utils import timezone
 
 class Usuario(models.Model):
     
-    first_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=50)
 
-    last_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=50)
     
     # El siguiente formato esta asi porque no se puede tener numero negativos no mamen
     edad = models.PositiveIntegerField(null=True, blank=True) 
@@ -20,8 +20,8 @@ class Usuario(models.Model):
 
     class Meta:
         ordering = ['-edad', 'first_name'] #edad en negativo pa que sea descendente
-        verbose_name = "Usuario"
-        verbose_name_plural = "Usuarios"
+        # verbose_name = "Usuario"
+        # verbose_name_plural = "Usuarios"
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} <{self.email}>"
@@ -77,5 +77,3 @@ class UsuarioHistorico(models.Model):
 
     def __str__(self):
         return f"Histórico de {self.usuario} modificado en {self.modified_at}"
-
-
