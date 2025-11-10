@@ -1,0 +1,91 @@
+{% extends 'home.html'%}
+
+{% block content %}
+
+<style>
+    .confirm-container {
+        max-width: 600px;
+        margin: 3rem auto;
+        background: white;
+        padding: 3rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border: 1px solid #D5DBDB;
+        text-align: center;
+    }
+
+    .confirm-container h1 {
+        color: #dc3545;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .user-info {
+        background: #F2F3F3;
+        padding: 1.5rem;
+        border-radius: 6px;
+        margin: 2rem 0;
+    }
+
+    .user-info p {
+        margin: 0.5rem 0;
+        color: #16191f;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .btn {
+        padding: 0.85rem 2rem;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background: #c82333;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+    }
+</style>
+
+<div class="confirm-container">
+    <h1>⚠️ Confirmar Eliminación</h1>
+    <p style="color: #535c69; margin-bottom: 2rem;">¿Está seguro que desea eliminar este usuario?</p>
+
+    <div class="user-info">
+        <p><strong>Nombre:</strong> {{ usuario.first_name }} {{ usuario.last_name }}</p>
+        <p><strong>Email:</strong> {{ usuario.email }}</p>
+        <p><strong>Edad:</strong> {{ usuario.edad|default:"-" }}</p>
+    </div>
+
+    <p style="color: #dc3545; font-weight: 600; margin-bottom: 2rem;">Esta acción no se puede deshacer</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">🗑️ Sí, Eliminar</button>
+            <a href="{% url 'listar_usuarios' %}" class="btn btn-secondary">✕ Cancelar</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

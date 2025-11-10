@@ -6,6 +6,7 @@ from .models import Usuario, ImportAudit, UsuarioHistorico
 import pandas as pd
 import io
 from datetime import datetime
+from django.contrib import messages
 
 def home(request):
     # Obtener estadísticas para la home
@@ -20,6 +21,10 @@ def home(request):
     }
     
     return render(request, 'home.html', context)
+
+def nuam(request):
+
+    return render(request,'nuam.html')
 
 
 
@@ -48,13 +53,11 @@ def crear_usuario(request):
             telefono=telefono
         )
 
-
-
     return render(request, 'crear.html')
 
 
 
-def editar_usuario(request, pk):
+def editar_datos(request, pk):
     usuario = get_object_or_404(Usuario, pk=pk)
 
     if request.method == 'POST':
@@ -65,23 +68,25 @@ def editar_usuario(request, pk):
         telefono = request.POST.get('telefono')
         fecha_nacimiento = request.POST.get('fecha_nacimiento')
 
-        if not first_name or not last_name or not email:
-            messages.error(request, 'Los campos Nombre, Apellido, Email son obligatorios.')
+        if not nombre or not apellido or not email:
+            messages.error(request, 'Los campos Nombre, Apellido y Email son obligatorios.')
         else:
             try:
-                usuario.first_name = first_name
-                usuario.last_name = last_name
+                usuario.first_name = nombre
+                usuario.last_name = apellido
                 usuario.edad = int(edad) if edad else None
                 usuario.email = email
                 usuario.telefono = telefono if telefono else None
                 usuario.fecha_nacimiento = fecha_nacimiento if fecha_nacimiento else None
+
                 usuario.save()
-                messages.success(request,f'Datos de {usuario.first_name} {usuario.last_name} actualizados correctamente')
+                messages.success(request, f'Datos de {usuario.first_name} {usuario.last_name} actualizados correctamente.')
                 return redirect('listar_usuarios')
             except Exception as e:
-                messages.error(request,f'Error al guardar los cambios: {e}')
-    
-    return render(request,'editar.html', {'usuario':usuario})
+                messages.error(request, f'Error al guardar los cambios: {e}')
+
+    context = {'usuario': usuario}
+    return render(request, 'editar.html', context)
 
 
 class UploadExcelView(View):
@@ -327,3 +332,4 @@ def descargar_plantilla(request):
             worksheet.column_dimensions[column_letter].width = adjusted_width
     
     return response
+

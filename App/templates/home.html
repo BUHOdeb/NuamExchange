@@ -576,12 +576,12 @@
         <div class="nav-container">
             <a href="#" class="logo">
                 <div class="logo-icon">📊</div>
-                <span>Django CRUD Academy</span>
+                <span>NuamExchange</span>
             </a>
             
             <ul class="nav-links" id="navLinks">
                 <li><a href="#" class="active">Inicio</a></li>
-                <li><a href="#">Acerca de</a></li>
+                <li><a href="{% url 'nuam'%}">Acerca de</a></li>
                 <li><a href="#">Servicios</a></li>
                 <li><a href="#">Contacto</a></li>
             </ul>
@@ -597,7 +597,7 @@
     <!-- HERO SECTION -->
     <section class="hero">
         <div class="hero-content">
-            <h1>Sistema de Gestión CRUD</h1>
+            <h1>Sistema de Gestión </h1>
             <p>Plataforma profesional para administrar tus datos de forma eficiente y segura</p>
             <div class="hero-buttons">
                 <button class="btn btn-primary">Comenzar Ahora</button>
@@ -608,8 +608,7 @@
 
     <!-- MAIN CONTENT -->
     <div class="container">
-        {% block content %}
-        <!-- UPLOAD SECTION -->
+       
         {% block content %}
         <div class="upload-section">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">

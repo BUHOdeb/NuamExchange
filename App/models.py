@@ -78,3 +78,4 @@ class UsuarioHistorico(models.Model):
     def __str__(self):
         return f"Histórico de {self.usuario} modificado en {self.modified_at}"
 
+
