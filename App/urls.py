@@ -5,9 +5,10 @@ from . import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('usuarios/', views.listar_usuarios, name='listar_usuarios'),
-
     path('crear/', views.crear_usuario, name='crear_usuario'),
+    path('editar/', views.editar_usuario, name='editar_usuario'),
     path('upload-excel/', views.UploadExcelView.as_view(), name='upload_excel'),
     path('descargar-plantilla/', views.descargar_plantilla, name='descargar_plantilla'),
+    path('editar/',views.editar_usuario, name='editar_datos'),
 
 ]

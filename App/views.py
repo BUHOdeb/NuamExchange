@@ -1,5 +1,5 @@
 # App/views.py
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse, HttpResponse
 from django.views import View
 from .models import Usuario, ImportAudit, UsuarioHistorico
@@ -21,13 +21,68 @@ def home(request):
     
     return render(request, 'home.html', context)
 
+
+
 def listar_usuarios(request):
     usuarios = Usuario.objects.all()
     context = {'usuarios': usuarios}
     return render(request, 'listar.html', context)
 
+
+
+
+
 def crear_usuario(request):
+    if request.method == 'POST':
+        nombre = request.POST.get('first_name')
+        apellido = request.POST.get('last_name')
+        edad = request.POST.get('edad')
+        email = request.POST.get('email')
+        telefono = request.POST.get('telefono')
+
+        Usuario.objects.create(
+            first_name=nombre,
+            last_name=apellido,
+            edad=edad,
+            email=email,
+            telefono=telefono
+        )
+
+
+
     return render(request, 'crear.html')
+
+
+
+def editar_usuario(request, pk):
+    usuario = get_object_or_404(Usuario, pk=pk)
+
+    if request.method == 'POST':
+        nombre = request.POST.get('first_name')
+        apellido = request.POST.get('last_name')
+        edad = request.POST.get('edad')
+        email = request.POST.get('email')
+        telefono = request.POST.get('telefono')
+        fecha_nacimiento = request.POST.get('fecha_nacimiento')
+
+        if not first_name or not last_name or not email:
+            messages.error(request, 'Los campos Nombre, Apellido, Email son obligatorios.')
+        else:
+            try:
+                usuario.first_name = first_name
+                usuario.last_name = last_name
+                usuario.edad = int(edad) if edad else None
+                usuario.email = email
+                usuario.telefono = telefono if telefono else None
+                usuario.fecha_nacimiento = fecha_nacimiento if fecha_nacimiento else None
+                usuario.save()
+                messages.success(request,f'Datos de {usuario.first_name} {usuario.last_name} actualizados correctamente')
+                return redirect('listar_usuarios')
+            except Exception as e:
+                messages.error(request,f'Error al guardar los cambios: {e}')
+    
+    return render(request,'editar.html', {'usuario':usuario})
+
 
 class UploadExcelView(View):
     def post(self, request):

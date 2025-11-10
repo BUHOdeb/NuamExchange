@@ -1,18 +1,19 @@
 {% extends 'home.html'%}
 
 {% block content %}
-
 <main> 
     <h1> Usuarios </h1>
 
     <div>
         <table> 
             <thead>
-                <tr>Nombre</tr>
-                <tr>Apellido</tr>
-                <tr>Edad</tr>
-                <tr>Email</tr>
-                <tr>Telefono</tr>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Edad</th>
+                    <th>Email</th>
+                    <th>Telefono</th>
+                </tr>
             </thead>
             <tbody>
                 {% for u in usuarios %}

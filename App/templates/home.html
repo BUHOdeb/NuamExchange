@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Django CRUD - AWS Academy Style</title>
+    <title>NuamExchange</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Amazon+Ember:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -609,6 +609,7 @@
     <!-- MAIN CONTENT -->
     <div class="container">
         <!-- UPLOAD SECTION -->
+        {% block content %}
         <div class="upload-section">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                 <h2 style="margin: 0;">📁 Cargar Archivos Excel</h2>
@@ -638,6 +639,7 @@
                 </div>
             </div>
         </div>
+        {% endblock %}
 
         <!-- STATS -->
         <div class="stats">
@@ -668,21 +670,21 @@
                 <div class="card-icon">📋</div>
                 <h3>Listar Registros</h3>
                 <p>Visualiza todos los registros de tu base de datos con opciones de filtrado y búsqueda avanzada.</p>
-                <a href="#" class="card-link">Ver registros →</a>
+                <a href="{% url 'listar_usuarios'%}" class="card-link">Ver registros →</a>
             </div>
 
             <div class="card">
                 <div class="card-icon">➕</div>
                 <h3>Crear Nuevo</h3>
                 <p>Agrega nuevos registros al sistema de forma rápida y sencilla con formularios validados.</p>
-                <a href="#" class="card-link">Crear ahora →</a>
+                <a href="{% url 'crear_usuario'%}" class="card-link">Crear ahora →</a>
             </div>
 
             <div class="card">
                 <div class="card-icon">✏️</div>
                 <h3>Editar Datos</h3>
                 <p>Modifica registros existentes con una interfaz intuitiva y confirmación de cambios.</p>
-                <a href="#" class="card-link">Editar →</a>
+                <a href="{% url 'editar_datos'%}" class="card-link">Editar →</a>
             </div>
 
             <div class="card">
