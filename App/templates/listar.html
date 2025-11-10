@@ -1,6 +1,7 @@
-{% extends 'home.html'%}
+{% extends 'home.html' %}
 
 {% block content %}
+
 <main> 
     <h1> Usuarios </h1>
 
@@ -35,3 +36,35 @@
 </main>
 
 {% endblock %}
+=======
+<h1>Usuarios</h1>
+<div>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Edad</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in usuarios %}
+      <tr>
+        <td>{{ u.first_name }}</td>
+        <td>{{ u.last_name }}</td>
+        <td>{{ u.edad }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.telefono }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td>No hay usuarios :C</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+>>>>>>> 80e8183224e2b7333c82a4fb956db52b33477803
