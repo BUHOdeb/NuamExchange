@@ -19,13 +19,13 @@ class Usuario(models.Model):
 
     fecha_nacimiento = models.DateField(null=True, blank=True)
 
-    # password_hash = models.CharField(max_length=30)    
+    password_hash = models.CharField(max_length=30, null=True, blank=True)    
 
-    # def set_clave_secreta(self, clave_raw):
-    #     self.clave_secreta_hash = make_password(clave_raw)
+    def set_clave_secreta(self, clave_raw):
+        self.clave_secreta_hash = make_password(clave_raw)
     
-    # def check_clave_secreta(self, clave_raw):
-    #     return check_password(clave_raw, self.clave_secreta_hash)
+    def check_clave_secreta(self, clave_raw):
+        return check_password(clave_raw, self.clave_secreta_hash)
 
     class Meta:
         
