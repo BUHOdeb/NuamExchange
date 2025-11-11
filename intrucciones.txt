@@ -1,7 +1,0 @@
-activa el ambiente virtual y intslas las siguientes dependencias para   que todo funcione:
-
-pip install django
-pip install pandas
-pip install pandas openpyxl xlrd
-pip install psycopg2
-pip install psycopg2-binary
