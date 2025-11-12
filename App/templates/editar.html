@@ -1,59 +1,148 @@
 {% extends 'home.html'%}
 
 {% block content %}
+<style>
+    /* --- ESTILOS BÁSICOS DEL FORMULARIO --- */
+    .form-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    }
 
-<div class="max-w-3xl mx-auto bg-white p-8 shadow-lg rounded-lg mt-10">
-    <h2 class="text-2x1 font-bold mb-6 text-gray-800">Editar Usuario</h2>
+    .form-container h2 {
+        text-align: center;
+        margin-bottom: 1rem;
+        color: #333;
+    }
 
-    <form method="POST" action="{% url 'editar_datos' usuario.id %}" class="space-y-4">
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 0.3rem;
+    }
+
+    input {
+        width: 100%;
+        padding: 0.6rem;
+        border: 1px solid #ccc;
+        border-radius: 0.4rem;
+        font-size: 1rem;
+    }
+
+    button {
+        background-color: #2563eb;
+        color: white;
+        padding: 0.6rem 1rem;
+        border: none;
+        border-radius: 0.4rem;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.2s ease;
+    }
+
+    button:hover {
+        background-color: #1d4ed8;
+    }
+
+    /* --- MENSAJES DE VALIDACIÓN --- */
+    .messages {
+        margin-bottom: 1rem;
+    }
+
+    .message {
+        padding: 0.75rem;
+        border-radius: 0.4rem;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+
+    .message.success {
+        background-color: #dcfce7;
+        color: #166534;
+        border: 1px solid #86efac;
+    }
+
+    .message.error {
+        background-color: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fca5a5;
+    }
+</style>
+
+<div class="form-container">
+    <h2>Editar Usuario</h2>
+
+    <!-- Mostrar mensajes de exito o error -->
+    <div class="messages">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+
+    <form method="POST">
         {% csrf_token %}
 
-        <div>
-            <label class="block text-gray-700 font-medium mb-1">Nombre</label>
-            <input type="text" name="first_name" value="{{ usuario.first_name }}" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200">
-            </div>
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text"
+            name="nombre"
+            id="nombre"
+            value="{{ usuario.first_name }}"
+            required>
+        </div>
 
-            <div> 
-                <label class="block text-gray-700 font-medium mb-1"></label>Apellido</label>
-                <input type="text" name="last_name" value="{{ usuario.last_name }}" required
-                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus: outline-none focus: ring focus:ring-blue-200">
-            </div>
+        <div class="form-group">
+            <label for="apellido">Apellido:</label>
+            <input type="text"
+            name="apellido"
+            id="apellido"
+            value="{{ usuario.last_name }}"
+            required>
+        </div>
 
-            <div>
-                <label class="block text-gray-700 font-medium mb-1">Edad</label>
-                <input type="number" name="edad" value="{{ usuario.edad }}" min="0"
-                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:online-none focus:ring focus:ring-blue-200">
-            </div>
+        <div class="form-group">
+            <label for="edad">Edad:</label>
+            <input type="number"
+            name="edad"
+            id="edad"
+            value="{{ usuario.edad|default_if_none:'' }}">
+        </div>
 
-            <div>
-                <label class="block text-gray-700 font-medium mb-1">Email</label>
-                <input type="email" name="email" value="{{ usuario.email }}" required 
-                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:online-none focus:ring focus:ring-blue-200">
-            </div>
+        <div class="form-group">
+            <label for="email">Correo electrónico:</label>
+            <input type="email"
+            name="email"
+            id="email"
+            value="{{ usuario.email }}"
+            required>
+        </div>
 
+        <div class="form-group">
+            <label for="telefono">Teléfono:</label>
+            <input type="text"
+            name="telefono"
+            id="telefono"
+            value="{{ usuario.telefono|default_if_none:'' }}">
+        </div>
 
-            <div>
-                 <label class="block text-gray-700 font-medium mb-1">Telefono</label>
-                 <input type="text" name="telefono" value="{{ usuario.telefono }}"
-                 class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200">
-            </div>
+        <div class="form-group">
+            <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+            <input type="date"
+            name="fecha_nacimiento"
+            id="fecha_nacimiento"
+            value="{{ usuario.fecha_nacimiento|date:'Y-m-d' }}">
+        </div>
 
-            <div>
-                <label class="block text-gray-700 font-medium mb-1">Fecha de Nacimiento</label>
-                <input type="date" name="fecha_nacimiento" value="{{ usuario.fecha_nacimiento|date:'Y-m-d' }}"
-                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200">
-            </div>
-
-            <div class="flex justify-end gap-4 mt-6">
-                <a href="{% url 'listar_usuarios' %}"
-                class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition">
-                Cancelar
-            </a>
-            <button type="submit"
-            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Guardar Cambios</button>
-
-            </div>
-        </form>
+        <div style="text-align:center;">
+            <button type="submit">Guardar Cambios</button>
+        </div>
+    </form>
 </div>
-
 {% endblock %}
