@@ -299,4 +299,4 @@ def descargar_plantilla(request):
             worksheet.column_dimensions[column_letter].width = adjusted_width
     
     return response
-
+# App/views.py

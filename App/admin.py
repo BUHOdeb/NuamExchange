@@ -1,6 +1,7 @@
+# App/admin.py
+
 from django.contrib import admin
 from .models import Usuario, ImportAudit
-
 
 # Register your models here.
 @admin.register(Usuario)

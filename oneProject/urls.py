@@ -1,3 +1,4 @@
+# App/oneProject/urls.py
 """
 URL configuration for oneProject project.
 
@@ -21,3 +22,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('App.urls')),
 ]
+# App/oneProject/urls.py

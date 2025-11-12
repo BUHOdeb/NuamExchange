@@ -9,3 +9,5 @@ urlpatterns = [
     path('upload-excel/', views.UploadExcelView.as_view(), name='upload_excel'),
     path('descargar-plantilla/', views.descargar_plantilla, name='descargar_plantilla'),
     ]
+
+# App/urls.py
