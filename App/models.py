@@ -32,7 +32,7 @@ def validate_email_domain(value):
 class Usuario(models.Model):
     """
     Modelo de Usuario del sistema - NO usar para autenticación
-    Usar django.contrib.auth.models.User para login 
+    Usar django.contrib.auth.models.User para login
     """
     first_name = models.CharField(
         max_length=50,
@@ -77,9 +77,7 @@ class Usuario(models.Model):
         blank=True,
         verbose_name='Fecha de Nacimiento'
     )
-    
-    # ELIMINAR password_hash - NO NECESARIO
-    # Django ya tiene User con contraseñas seguras
+
     
     # Campos de auditoría
     created_at = models.DateTimeField(auto_now_add=True)
