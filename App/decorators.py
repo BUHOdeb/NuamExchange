@@ -1,5 +1,4 @@
 # App/decorators.py - NUEVO ARCHIVO
-from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import redirect
 from django.contrib import messages
 from functools import wraps
@@ -26,7 +25,6 @@ def role_required(role_names):
             else:
                 messages.error(request, 'No tienes permisos para acceder a esta sección')
                 return redirect('home')
-        
         return wrapper
     return decorator
 

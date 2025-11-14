@@ -18,36 +18,37 @@
             </a>
             
             <ul class="nav-links" id="navLinks">
-            <li><a href="{% url 'home'%}" class="active">Inicio</a></li>
-            <li><a href="#">Acerca de Nuam</a></li>
-            <li><a href="#">Contactanos</a></li>
+                <li><a href="{% url 'home'%}" class="active">Inicio</a></li>
+                <li><a href="#">Acerca de Nuam</a></li>
+                <li><a href="#">Contactanos</a></li>
     
-            {% if user.is_authenticated %}
-                <li>
-                    <form method="POST" action="{% url 'logout' %}" style="display: inline; margin: 0;">
-                        {% csrf_token %}
-                        <button type="submit" style="
-                        background: none;
-                            border: none;
-                            color: #ff6b6b;
-                            cursor: pointer;
-                            font-family: inherit;
-                            font-size: inherit;
-                            font-weight: 500;
-                            padding: 1.5rem 1.2rem;
-                            display: block;
-                            width: 100%;
-                            text-align: left;
-                            transition: all 0.2s ease;
-                            " onmouseover="""this.style.background='rgba(255,107,107,0.1)'"
-                            onmouseout="this.style.background='none'">
-                            👤 Cerrar Sesión ({{ user.username }})
-                        </button>
-                    </form>
-                </li>
-            {% else %}
-                <li><a href="{% url 'login' %}"> Iniciar sesion</a></li>
-            {% endif %}
+                {% if user.is_authenticated %}
+                    <li>
+                        <form method="POST" action="{% url 'logout' %}" style="display: inline; margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" style="
+                            background: none;
+                                border: none;
+                                color: #ff6b6b;
+                                cursor: pointer;
+                                font-family: inherit;
+                                font-size: inherit;
+                                font-weight: 500;
+                                padding: 1.5rem 1.2rem;
+                                display: block;
+                                width: 100%;
+                                text-align: left;
+                                transition: all 0.2s ease;
+                                " onmouseover="this.style.background='rgba(255,107,107,0.1)'"
+                                onmouseout="this.style.background='none'">
+                                👤 Cerrar Sesión ({{ user.username }})
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}"> Iniciar sesion</a></li>
+                {% endif %}
+            </ul>
 
             <div class="hamburger" id="hamburger">
                 <span></span>

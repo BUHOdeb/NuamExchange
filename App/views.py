@@ -3,9 +3,9 @@
 Vistas del sistema NuamExchange
 Maneja todas las peticiones HTTP y lógica de negocio
 """
-from sqlite3 import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
+from django.utils import timezone
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -16,12 +16,11 @@ from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.core.exceptions import ValidationError
 from .models import Usuario, ImportAudit
-from .decorators import admin_required
 from .forms import UsuarioForm
 import pandas as pd
 from datetime import date, datetime
 import logging
-
+from . import forms
 #logger para registrar y eventos importantes
 logger = logging.getLogger(__name__)
 
@@ -267,12 +266,6 @@ def listar_usuarios(request):
     # Consulta base: solo usuarios activos
     usuarios_list = Usuario.objects.filter(is_active=True)
 
-    # Consulta de admins
-    admins = Usuario.objects.filter(rol='ADMIN')
-    
-    #users
-    users = Usuario.objects.filter(rol='USER')
-
     # Aplicar búsqueda si existe término
     if query:
         usuarios_list = usuarios_list.filter(
@@ -319,7 +312,13 @@ def listar_usuarios(request):
         'total': usuarios_list.count()
     }
     
-    return render(request, 'listar.html', context, {'admins': admins, 'users': users})
+     # Consulta de admins
+    admins = Usuario.objects.filter(rol='ADMIN')
+    
+    #users
+    users = Usuario.objects.filter(rol='USER')
+
+    return render(request, 'listar.html', context)
 
 
 @login_required
@@ -441,6 +440,41 @@ def crear_usuario(request):
     
     # GET request: mostrar formulario vacío
     return render(request, 'crear.html')
+
+@login_required
+def editar_usuario(request, usuario_id):
+    usuario = get_object_or_404(Usuario, id=usuario_id)
+    # Solo admins pueden editar
+    if not (
+        request.user.is_superuser or
+        (hasattr(request.user, "usuario") and 
+         request.user.usuario.categoria.name == "ADMIN" )
+    ):
+        return HttpResponseForbidden("No posees permisos para realizar esta accion")
+
+    if request.method == "POST":
+        usuario.first_name = request.POST.get("first_name")
+        usuario.last_name = request.POST.get("last_name")
+        usuario.email = request.POST.get("email")
+        usuario.telefono = request.POST.get("telefono")
+        usuario.edad = request.POST.get("edad") or None
+        usuario.fecha_nacimiento = request.POST.get("fecha_nacimiento") or None
+        usuario.rol = request.POST.get("rol")
+        usuario.is_active = request.POST.get("is_active") == "True"
+        usuario.updated_at = timezone.now()
+
+        try:
+            usuario.save()
+            messages.success(request, "Usuario actualizado correctamente.")
+            return redirect("listar_usuarios")
+        except Exception as e:
+            messages.error(request, f"Error: {e}")
+
+    return render(request, "editar.html", {
+        "usuario": usuario,
+        "today": timezone.now().date(),
+    })
+
 
 @login_required
 # @admin_required  # Solo administradores pueden eliminar

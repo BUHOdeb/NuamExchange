@@ -116,7 +116,7 @@
                     value="USER"
                     {% if usuario.rol == "USER" %}
                     selected
-                    {% endif }>Usuario</option>
+                    {% endif %}>Usuario</option>
                 </select>
             </div>
         </div>
@@ -157,6 +157,36 @@
         </div>
     </form>
 </div>
+
+<script>
+    // Calcular edad automáticamente cuando cambia la fecha de nacimiento
+    document.getElementById('fecha_nacimiento').addEventListener('change', function() {
+        const fechaNac = new Date(this.value);
+        const hoy = new Date();
+        
+        if (fechaNac && fechaNac <= hoy) {
+            let edad = hoy.getFullYear() - fechaNac.getFullYear();
+            const mes = hoy.getMonth() - fechaNac.getMonth();
+            
+            if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+                edad--;
+            }
+            
+            document.getElementById('edad').value = edad;
+        }
+    });
+
+    // Formatear teléfono automáticamente
+    document.getElementById('telefono').addEventListener('blur', function() {
+        let tel = this.value.trim();
+        if (tel && !tel.startsWith('+') && !tel.startsWith('56')) {
+            // Si no tiene prefijo, agregar +56
+            if (tel.startsWith('9') && tel.length === 9) {
+                this.value = '+56' + tel;
+            }
+        }
+    });
+</script>
 
 <style>
     .form-container {
@@ -373,34 +403,4 @@
         }
     }
 </style>
-
-<script>
-    // Calcular edad automáticamente cuando cambia la fecha de nacimiento
-    document.getElementById('fecha_nacimiento').addEventListener('change', function() {
-        const fechaNac = new Date(this.value);
-        const hoy = new Date();
-        
-        if (fechaNac && fechaNac <= hoy) {
-            let edad = hoy.getFullYear() - fechaNac.getFullYear();
-            const mes = hoy.getMonth() - fechaNac.getMonth();
-            
-            if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
-                edad--;
-            }
-            
-            document.getElementById('edad').value = edad;
-        }
-    });
-
-    // Formatear teléfono automáticamente
-    document.getElementById('telefono').addEventListener('blur', function() {
-        let tel = this.value.trim();
-        if (tel && !tel.startsWith('+') && !tel.startsWith('56')) {
-            // Si no tiene prefijo, agregar +56
-            if (tel.startsWith('9') && tel.length === 9) {
-                this.value = '+56' + tel;
-            }
-        }
-    });
-</script>
 {% endblock %}

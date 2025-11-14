@@ -1,0 +1,70 @@
+=======
+<h1>Usuarios</h1>
+<div>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Edad</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in usuarios %}
+      <tr>
+        <td>{{ u.first_name }}</td>
+        <td>{{ u.last_name }}</td>
+        <td>{{ u.edad }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.telefono }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td>No hay usuarios :C</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<!-- App/templates/listar.html -->
+
+
+
+{% extends 'home.html' %}
+
+{% block extra_css %}
+<style>
+    /* ... Todo tu CSS aquí ... */
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+    <h2>✏️ Editar Usuario</h2>
+    
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    /* ... Todo tu código JavaScript aquí ... */
+</script>
+{% endblock %}
+
+
+<head>
+    {% block extra_css %}{% endblock %} 
+</head>
+<body>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+    
+    {% block extra_js %}{% endblock %} 
+</body>
+</html>

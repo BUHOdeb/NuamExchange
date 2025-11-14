@@ -79,7 +79,6 @@ class Usuario(models.Model):
     ROL_CHOICES = [
         ('ADMIN', 'administrador'),
         ('USER', 'Usuario'),
-        ('GUEST', 'Invitado'),
     ]
     
     user = models.OneToOneField(
@@ -152,7 +151,7 @@ class Usuario(models.Model):
     )
 
     # Asignacion de rol
-    rol = models.CharField(max_length=55, choices=ROL_CHOICES, default='GUEST')
+    rol = models.CharField(max_length=55, choices=ROL_CHOICES, default='USER')
     
     # ===== CAMPOS DE AUDITORÍA =====
     
@@ -250,8 +249,8 @@ class Usuario(models.Model):
         self.full_clean()
         super().save(*args, **kwargs)
 
-class categoria(models.Model):
-    name = models.CharField(max_length=50)
+class Categoria(models.Model):
+    name = models.CharField(max_length=50, null = True, blank=True)
 
     def __str__(self):
         return self.name
@@ -533,12 +532,12 @@ def save_user_profile(sender, instance, **kwargs):
 def create_autenticado(sender, instance, created, **kwargs):
     if created and instance.email:
         user = User.objects.create_user(
-            nombre_usuario=instance.email,
+            username=instance.email,
             email=instance.email,
             password="1234"
         )
-    instance.user = user
-    instance.save()
+
+        Usuario.objects.filter(id=instance.id).update(user=user)
 
 @receiver(post_save, sender=Usuario)
 def create_usuario_historico(sender, instance, created, **kwargs):
