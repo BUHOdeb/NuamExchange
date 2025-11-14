@@ -18,6 +18,8 @@ from django.contrib.auth.models import User
 
 # Validador de teléfono: acepta formato internacional
 # Ejemplo: +56912345678
+
+
 phone_regex = RegexValidator(
     regex=r'^\+?1?\d{9,15}$',
     message="Formato de teléfono inválido. Use: +56912345678"
@@ -75,11 +77,11 @@ class Usuario(models.Model):
     
     Este modelo almacena información adicional de usuarios del negocio
     """
-
     ROL_CHOICES = [
         ('ADMIN', 'administrador'),
         ('USER', 'Usuario'),
     ]
+
     
     user = models.OneToOneField(
         User,
@@ -129,6 +131,7 @@ class Usuario(models.Model):
         verbose_name='Password',
         help_text='Contraseña (minimo 6 caracteres)',
         null=True,
+        blank=True
         )
 
     # Teléfono del usuario (opcional)
@@ -185,7 +188,7 @@ class Usuario(models.Model):
         help_text='Usuario activo en el sistema'
     )
     
-    categoria = models.ForeignKey('categoria', on_delete=models.CASCADE, null = True)
+    categoria = models.ForeignKey('categoria', on_delete=models.CASCADE, null=True, blank=True)
     class Meta:
         # Ordenar por fecha de creación descendente (más recientes primero)
         ordering = ['-created_at']
@@ -511,7 +514,8 @@ def create_user_profile(sender, instance, created, **kwargs):
         created: True si es un nuevo registro
     """
     if created:
-        UserProfile.objects.create(user=instance)
+        role = 'Admin' if instance.is_superuser else 'Employee'
+        UserProfile.objects.create(user=instance, role=role)
 
 
 @receiver(post_save, sender=User)

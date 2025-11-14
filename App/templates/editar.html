@@ -103,22 +103,9 @@
                 <small class="help-text">La edad se calculará automáticamente</small>
             </div>
         </div>
-        <div class="form-row">
-            <div class="form-group">
-                <label>Rol:</label>
-                <select name="rol">
-                    <option 
-                    value="ADMIN" 
-                    {% if usuario.rol == "ADMIN" %} 
-                    selected 
-                    {% endif %}>Administrador</option>
-                    <option 
-                    value="USER"
-                    {% if usuario.rol == "USER" %}
-                    selected
-                    {% endif %}>Usuario</option>
-                </select>
-            </div>
+        <div class="form-group">
+            <label>Rol:</label>
+            <input type="text" value="{{ usuario.rol }}" readonly>
         </div>
 
         <div class="form-group">

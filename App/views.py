@@ -13,10 +13,13 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.db import transaction, IntegrityError
 from django.utils.decorators import method_decorator
 from django.core.exceptions import ValidationError
+import random, string
 from .models import Usuario, ImportAudit
 from .forms import UsuarioForm
+from .decorators import admin_required
 import pandas as pd
 from datetime import date, datetime
 import logging
@@ -322,126 +325,132 @@ def listar_usuarios(request):
 
 
 @login_required
+@admin_required
 def crear_usuario(request):
     """
-    Crear un nuevo usuario en el sistema
-    
+    Crear un nuevo usuario meramente visual en el sistema.
+
     - GET: Muestra el formulario vacío
     - POST: Procesa y crea el usuario con validaciones
-    
-    Validaciones:
-    - Campos obligatorios: nombre, apellido, email
-    - Email único
-    - Contraseña de minimo 6 caracteres (Obligatoria)
-    - Teléfono único (si se proporciona)
-    - Edad entre 0-150
-    - Fecha de nacimiento no futura
     """
-    
-    if request.method == 'POST':
-        try:
-            # Obtener datos del formulario y limpiarlos
-            first_name = request.POST.get('first_name', '').strip()
-            last_name = request.POST.get('last_name', '').strip()
-            email = request.POST.get('email', '').strip().lower()
-            password = request.POST.get('password', '')
-            edad = request.POST.get('edad', '').strip()
-            telefono = request.POST.get('telefono', '').strip()
-            fecha_nacimiento = request.POST.get('fecha_nacimiento', '').strip()
-            rol = request.POST.get('rol', 'INVITADO')
-            
-            # ===== VALIDACIONES =====
-            
-            # 1. Validar campos obligatorios
-            if not all([first_name, last_name, email, password]):
-                messages.error(request, 'Nombre, apellido y email son obligatorios')
-                return render(request, 'crear.html')
-            
-            # 2. Validar email único
-            if Usuario.objects.filter(email=email).exists():
-                messages.error(request, f'El email {email} ya está registrado')
-                return render(request, 'crear.html')
-            
-            # 3. Validar teléfono único (si se proporciona)
-            if telefono and Usuario.objects.filter(telefono=telefono).exists():
-                messages.error(request, f'El teléfono {telefono} ya está registrado')
-                return render(request, 'crear.html')
-            
-            # 4. Convertir y validar edad
-            edad_int = None
-            if edad:
-                try:
-                    edad_int = int(edad)
-                    if edad_int < 0 or edad_int > 150:
-                        messages.error(request, 'La edad debe estar entre 0 y 150')
-                        return render(request, 'crear.html')
-                except ValueError:
-                    messages.error(request, 'Edad inválida')
-                    return render(request, 'crear.html')
-            
-            # 5. Convertir y validar fecha de nacimiento
-            fecha_obj = None
-            if fecha_nacimiento:
-                try:
-                    fecha_obj = datetime.strptime(fecha_nacimiento, '%Y-%m-%d').date()
-                    
-                    # No puede ser fecha futura
-                    if fecha_obj > datetime.now().date():
-                        messages.error(request, 'La fecha de nacimiento no puede ser futura')
-                        return render(request, 'crear.html')
-                except ValueError:
-                    messages.error(request, 'Formato de fecha inválido. Use YYYY-MM-DD')
-                    return render(request, 'crear.html')
-                
-            # 6. Validar contraseña
-            if not password or len(password) < 6:
-                messages.error(request, 'La contraseña es obligatoria y debe tener mas de 6 caracteres :D.')
+    context = {
+        'first_name': '',
+        'last_name': '',
+        'email': '',
+        'telefono': '',
+        'edad': '',
+        'fecha_nacimiento': '',
+        'rol': ''
+    }
 
-                return render(request, 'home.html')
-            
-            # ===== CREAR USUARIO =====
-            
-            usuario = Usuario.objects.create(
+    if request.method == 'POST':
+        # Obtener datos del formulario
+        first_name = request.POST.get('first_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()
+        email = request.POST.get('email', '').strip().lower()
+        edad = request.POST.get('edad', '').strip()
+        telefono = request.POST.get('telefono', '').strip()
+        fecha_nacimiento = request.POST.get('fecha_nacimiento', '').strip()
+        rol = request.POST.get('rol', 'USER')
+
+        context.update({
+            'first_name': first_name,
+            'last_name': last_name,
+            'email': email,
+            'telefono': telefono,
+            'edad': edad,
+            'fecha_nacimiento': fecha_nacimiento,
+            'rol': rol
+        })
+
+        # ===== VALIDACIONES =====
+        if not all([first_name, last_name, email]):
+            messages.error(request, 'Nombre, apellido y email son obligatorios')
+            return render(request, 'crear.html', context)
+
+        if Usuario.objects.filter(email=email).exists():
+            messages.error(request, f'El email {email} ya está registrado')
+            return render(request, 'crear.html', context)
+
+        if telefono and Usuario.objects.filter(telefono=telefono).exists():
+            messages.error(request, f'El teléfono {telefono} ya está registrado')
+            return render(request, 'crear.html', context)
+
+        edad_int = None
+        if edad:
+            try:
+                edad_int = int(edad)
+                if edad_int < 0 or edad_int > 150:
+                    messages.error(request, 'La edad debe estar entre 0 y 150')
+                    return render(request, 'crear.html', context)
+            except ValueError:
+                messages.error(request, 'Edad inválida')
+                return render(request, 'crear.html', context)
+
+        fecha_obj = None
+        if fecha_nacimiento:
+            try:
+                fecha_obj = datetime.strptime(fecha_nacimiento, '%Y-%m-%d').date()
+                if fecha_obj > datetime.now().date():
+                    messages.error(request, 'La fecha de nacimiento no puede ser futura')
+                    return render(request, 'crear.html', context)
+            except ValueError:
+                messages.error(request, 'Formato de fecha inválido. Use YYYY-MM-DD')
+                return render(request, 'crear.html', context)
+
+        # ===== CREAR USUARIO =====
+        try:
+            random_password = ''.join(random.choices(string.ascii_letters + string.digits, k=12))
+            user = User.objects.create_user(
+                username=email,
+                email=email,
+                password=random_password,
+                first_name=first_name,
+                last_name=last_name,
+                is_staff=(rol.upper() == 'ADMIN'),
+                is_superuser=(rol.upper() == 'ADMIN')
+            )
+
+            usuario = Usuario(
                 first_name=first_name,
                 last_name=last_name,
                 email=email,
                 edad=edad_int,
                 telefono=telefono if telefono else None,
                 fecha_nacimiento=fecha_obj,
-                created_by=request.user,  # Registrar quién creó el usuario
-                rol=rol
+                created_by=request.user,
+                rol=rol.upper(),
+                user=user
             )
-            
-            # Registrar en logs
-            logger.info(
-                f'Usuario {usuario.email} creado por {request.user.username}'
-            )
-            
-            # Mensaje de éxito
-            messages.success(
-                request,
-                f'Usuario {first_name} {last_name} creado exitosamente'
-            )
-            
+            usuario.save()
+
+            logger.info(f'Usuario {usuario.email} creado por {request.user.username}')
+            messages.success(request, f'Usuario {first_name} {last_name} creado exitosamente')
+            return redirect('listar_usuarios')  # <--- redirige para evitar doble submit
+
+        except IntegrityError:
+            messages.error(request, f'El usuario con email {email} ya existe')
+            logger.warning(f'IntegrityError creando usuario: {email}')
             return redirect('listar_usuarios')
-            
+
         except ValidationError as e:
-            # Errores de validación del modelo
             messages.error(request, f'Error de validación: {e}')
             logger.warning(f'Error de validación al crear usuario: {e}')
-        
-        except Exception as e:
-            # Cualquier otro error
-            logger.error(f'Error inesperado creando usuario: {e}')
-            messages.error(request, 'Error al crear usuario. Intente nuevamente.')
+            return render(request, 'crear.html', context)
 
-        usuario.set_password(password)
-        usuario.save()
-    
+        except Exception as e:
+            messages.error(request, 'Error al crear usuario. Intente nuevamente.')
+            logger.error(f'Error inesperado creando usuario: {e}')
+            return render(request, 'crear.html', context)
+
     # GET request: mostrar formulario vacío
-    return render(request, 'crear.html')
+    return render(request, 'crear.html', context)
+
+
+
 
 @login_required
+@admin_required
 def editar_usuario(request, usuario_id):
     usuario = get_object_or_404(Usuario, id=usuario_id)
     # Solo admins pueden editar
@@ -477,6 +486,7 @@ def editar_usuario(request, usuario_id):
 
 
 @login_required
+@admin_required
 # @admin_required  # Solo administradores pueden eliminar
 def eliminar_multiples_usuarios(request):
     """

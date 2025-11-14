@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NuamExchange</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <!-- NAVBAR -->
@@ -148,7 +149,7 @@
                 <div class="card-icon">✏️</div>
                 <h3>Editar Datos</h3>
                 <p>Modifica registros existentes con una interfaz intuitiva y confirmación de cambios.</p>
-                <a href="#" class="card-link">Editar →</a>
+                <a href="{% url 'listar_usuarios'%}" class="card-link">Editar →</a>
             </div>
             
             <div class="card">
@@ -408,6 +409,22 @@
             }
             return cookieValue;
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                icon: "{% if message.tags == 'error' %}error{% elif message.tags == 'warning' %}warning{% else %}success{% endif %}",
+                title: "{{ message }}",
+                timer: 3000,              // desaparece solo después de 3s
+                timerProgressBar: true,
+                toast: true,              // estilo tipo toast
+                position: 'top-end',      // esquina superior derecha
+                showConfirmButton: false
+                });
+            {% endfor %}
+        {% endif %}
+  });
     </script>
 </body>
 </html>

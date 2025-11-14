@@ -30,7 +30,8 @@
                     name="first_name" 
                     placeholder="Ingrese el nombre"
                     required
-                    autofocus>
+                    autofocus
+                    value="{{ first_name}}">
             </div>
 
             <div class="form-group">
@@ -40,7 +41,8 @@
                     id="apellidoID" 
                     name="last_name" 
                     placeholder="Ingrese el apellido"
-                    required>
+                    required
+                    value="{{ last_name }}">
             </div>
 
             <div class="form-group">
@@ -51,7 +53,8 @@
                     name="edad" 
                     placeholder="Ej: 25"
                     min="0"
-                    max="150">
+                    max="150"
+                    value="{{ edad }}">
             </div>
 
             <div class="form-group">
@@ -60,7 +63,8 @@
                     type="tel" 
                     id="telefonoID" 
                     name="telefono" 
-                    placeholder="+569 1234 5678">
+                    placeholder="+569 1234 5678"
+                    value="{{ telefono }}">
             </div>
 
             <div class="form-group form-grid-full">
@@ -70,7 +74,8 @@
                     id="emailID" 
                     name="email" 
                     placeholder="correo@ejemplo.com"
-                    required>
+                    required
+                    value="{{ email }}">
             </div>
 
             <div class="form-group form-grid-full">
@@ -78,7 +83,8 @@
                 <input 
                     type="date" 
                     id="fechaNacimientoID" 
-                    name="fecha_nacimiento">
+                    name="fecha_nacimiento"
+                    value="{{ fecha_nacimiento }}">
             </div>
         </div>
 

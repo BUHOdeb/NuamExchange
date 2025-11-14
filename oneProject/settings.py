@@ -131,35 +131,15 @@ TEMPLATES = [
 
 # Configuración de PostgreSQL
 # En producción usar variables de entorno para credenciales
+# settings.py (o settings_local.py si quieres separar producción/dev)
+
 DATABASES = {
     'default': {
-        # Motor de base de datos
-        'ENGINE': 'django.db.backends.postgresql',
-        
-        # Nombre de la base de datos
-        'NAME': os.environ.get('DB_NAME', 'postgres'),
-        
-        # Usuario de PostgreSQL
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        
-        # Contraseña (USAR VARIABLE DE ENTORNO EN PRODUCCIÓN)
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'Admin123'),
-        
-        # Host: localhost en desarrollo
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        
-        # Puerto: 5432 es el puerto por defecto de PostgreSQL
-        'PORT': os.environ.get('DB_PORT', '5432'),
-        
-        # Opciones adicionales
-        'OPTIONS': {
-            'connect_timeout': 10,  # Timeout de conexión en segundos
-        },
-        
-        # Mantener conexiones abiertas (mejora rendimiento)
-        'CONN_MAX_AGE': 600,  # 10 minutos
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # Esto creará un archivo db.sqlite3 en la raíz del proyecto
     }
 }
+
 
 
 # ==================== VALIDACIÓN DE CONTRASEÑAS ====================
