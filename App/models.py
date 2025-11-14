@@ -75,6 +75,13 @@ class Usuario(models.Model):
     
     Este modelo almacena información adicional de usuarios del negocio
     """
+
+    ROL_CHOICES = [
+        ('ADMIN', 'administrador'),
+        ('USER', 'Usuario'),
+        ('GUEST', 'Invitado'),
+    ]
+    
     user = models.OneToOneField(
         User,
         on_delete= models.CASCADE,
@@ -143,6 +150,9 @@ class Usuario(models.Model):
         blank=True,
         verbose_name='Fecha de Nacimiento'
     )
+
+    # Asignacion de rol
+    rol = models.CharField(max_length=55, choices=ROL_CHOICES, default='GUEST')
     
     # ===== CAMPOS DE AUDITORÍA =====
     
@@ -176,6 +186,7 @@ class Usuario(models.Model):
         help_text='Usuario activo en el sistema'
     )
     
+    categoria = models.ForeignKey('categoria', on_delete=models.CASCADE, null = True)
     class Meta:
         # Ordenar por fecha de creación descendente (más recientes primero)
         ordering = ['-created_at']
@@ -238,6 +249,12 @@ class Usuario(models.Model):
         # Ejecutar validaciones antes de guardar
         self.full_clean()
         super().save(*args, **kwargs)
+
+class categoria(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
 
 
 # ==================== MODELO AUDITORÍA DE IMPORTACIONES ====================

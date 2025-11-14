@@ -14,7 +14,6 @@ urlpatterns = [
     path('usuarios/', views.listar_usuarios, name='listar_usuarios'),
     path('crear/', views.crear_usuario, name='crear_usuario'),
     path('eliminar-multiple/', views.eliminar_multiples_usuarios, name='eliminar_multiples'),
-    path('editar/<int:usuario_id>/', views.editar_usuario, name='editar_usuario'),
 
 
     # ==================== IMPORTACIÓN DE EXCEL ====================

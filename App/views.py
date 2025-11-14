@@ -3,6 +3,7 @@
 Vistas del sistema NuamExchange
 Maneja todas las peticiones HTTP y lógica de negocio
 """
+from sqlite3 import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse, HttpResponse
 from django.views import View
@@ -18,7 +19,7 @@ from .models import Usuario, ImportAudit
 from .decorators import admin_required
 from .forms import UsuarioForm
 import pandas as pd
-from datetime import datetime
+from datetime import date, datetime
 import logging
 
 #logger para registrar y eventos importantes
@@ -265,7 +266,13 @@ def listar_usuarios(request):
     
     # Consulta base: solo usuarios activos
     usuarios_list = Usuario.objects.filter(is_active=True)
+
+    # Consulta de admins
+    admins = Usuario.objects.filter(rol='ADMIN')
     
+    #users
+    users = Usuario.objects.filter(rol='USER')
+
     # Aplicar búsqueda si existe término
     if query:
         usuarios_list = usuarios_list.filter(
@@ -312,7 +319,7 @@ def listar_usuarios(request):
         'total': usuarios_list.count()
     }
     
-    return render(request, 'listar.html', context)
+    return render(request, 'listar.html', context, {'admins': admins, 'users': users})
 
 
 @login_required
@@ -342,6 +349,7 @@ def crear_usuario(request):
             edad = request.POST.get('edad', '').strip()
             telefono = request.POST.get('telefono', '').strip()
             fecha_nacimiento = request.POST.get('fecha_nacimiento', '').strip()
+            rol = request.POST.get('rol', 'INVITADO')
             
             # ===== VALIDACIONES =====
             
@@ -401,7 +409,8 @@ def crear_usuario(request):
                 edad=edad_int,
                 telefono=telefono if telefono else None,
                 fecha_nacimiento=fecha_obj,
-                created_by=request.user  # Registrar quién creó el usuario
+                created_by=request.user,  # Registrar quién creó el usuario
+                rol=rol
             )
             
             # Registrar en logs
@@ -510,36 +519,6 @@ def eliminar_multiples_usuarios(request):
     }
 
     return render(request, "deletemulti.html", context)
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.contrib.auth.models import User
-from .models import Usuario  # si tienes un modelo extendido
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.contrib.auth.models import User
-from .models import Usuario  # si tienes un modelo extendido
-
-def editar_usuario(request, usuario_id):
-    usuario = get_object_or_404(Usuario, id=usuario_id)  # Ajusta el modelo según el tuyo
-
-    if request.method == "POST":
-        # Obtener datos del formulario
-        usuario.first_name = request.POST.get("nombre")
-        usuario.last_name = request.POST.get("apellido")
-        usuario.email = request.POST.get("email")
-        usuario.edad = request.POST.get("edad") or None
-        usuario.telefono = request.POST.get("telefono") or None
-        usuario.fecha_nacimiento = request.POST.get("fecha_nacimiento") or None
-
-        usuario.save()
-
-        messages.success(request, "Usuario actualizado correctamente.")
-        return redirect("listar_usuarios")
-
-    # Si es GET → mostrar formulario
-    return render(request, "editar.html", {"usuario": usuario})
 
 
 # ==================== IMPORTACIÓN EXCEL ====================
@@ -851,4 +830,3 @@ def descargar_plantilla(request):
     logger.info(f'Plantilla descargada por {request.user.username}')
     
     return response
-

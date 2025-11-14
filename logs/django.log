@@ -2399,3 +2399,565 @@ INFO 2025-11-13 21:00:10,679 basehttp "GET / HTTP/1.1" 200 16136
 INFO 2025-11-13 21:00:10,996 basehttp "GET / HTTP/1.1" 200 16136
 INFO 2025-11-13 21:00:21,491 autoreload C:\Users\Sander\Desktop\NuamExhange\App\views.py changed, reloading.
 INFO 2025-11-13 21:00:22,120 autoreload Watching for file changes with StatReloader
+INFO 2025-11-13 22:10:26,263 autoreload Watching for file changes with StatReloader
+INFO 2025-11-13 22:16:18,127 autoreload Watching for file changes with StatReloader
+INFO 2025-11-13 22:16:28,550 basehttp "GET / HTTP/1.1" 200 16119
+INFO 2025-11-13 22:16:28,867 basehttp "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-11-13 22:16:30,813 basehttp "GET / HTTP/1.1" 200 16119
+INFO 2025-11-13 22:16:40,903 basehttp "GET / HTTP/1.1" 200 16136
+INFO 2025-11-13 22:16:40,945 basehttp "GET /static/css/style.css HTTP/1.1" 304 0
+WARNING 2025-11-13 22:16:41,647 log Not Found: /favicon.ico
+WARNING 2025-11-13 22:16:41,647 basehttp "GET /favicon.ico HTTP/1.1" 404 3896
+INFO 2025-11-13 22:17:09,387 basehttp "GET / HTTP/1.1" 200 16119
+INFO 2025-11-13 22:19:00,003 basehttp "GET / HTTP/1.1" 200 16119
+INFO 2025-11-13 22:26:57,185 autoreload C:\Users\Sander\Desktop\NuamExhange\App\views.py changed, reloading.
+INFO 2025-11-13 22:26:57,806 autoreload Watching for file changes with StatReloader
+INFO 2025-11-13 22:27:11,242 basehttp "GET / HTTP/1.1" 200 16145
+INFO 2025-11-13 22:27:14,028 basehttp "GET /usuarios/ HTTP/1.1" 200 20229
+INFO 2025-11-13 22:31:25,370 autoreload C:\Users\Sander\Desktop\NuamExhange\App\views.py changed, reloading.
+INFO 2025-11-13 22:31:25,929 autoreload Watching for file changes with StatReloader
+INFO 2025-11-13 22:31:29,484 basehttp "GET /usuarios/ HTTP/1.1" 200 20229
+INFO 2025-11-13 22:31:31,683 basehttp "GET /usuarios/ HTTP/1.1" 200 20229
+INFO 2025-11-13 22:31:31,872 basehttp "GET / HTTP/1.1" 200 16128
+INFO 2025-11-13 22:31:38,728 basehttp "GET /usuarios/ HTTP/1.1" 200 20229
+INFO 2025-11-13 22:31:39,515 basehttp "GET /usuarios/ HTTP/1.1" 200 20212
+INFO 2025-11-13 22:31:45,142 basehttp "GET /usuarios/ HTTP/1.1" 200 20212
+ERROR 2025-11-13 22:32:50,837 log Internal Server Error: /usuarios/
+Traceback (most recent call last):
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Sander\Desktop\NuamExhange\App\views.py", line 316, in listar_usuarios
+    return render(request, 'listar.html', context)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\defaulttags.py", line 479, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\urls\resolvers.py", line 851, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'editar_usuario' with no arguments not found. 1 pattern(s) tried: ['editar/(?P<usuario_id>[0-9]+)/\\Z']
+ERROR 2025-11-13 22:32:50,842 basehttp "GET /usuarios/ HTTP/1.1" 500 151219
+ERROR 2025-11-13 22:32:52,874 log Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Sander\Desktop\NuamExhange\App\views.py", line 232, in home
+    return render(request, 'home.html', context)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\defaulttags.py", line 479, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\urls\resolvers.py", line 851, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'editar_usuario' with no arguments not found. 1 pattern(s) tried: ['editar/(?P<usuario_id>[0-9]+)/\\Z']
+ERROR 2025-11-13 22:32:52,878 basehttp "GET / HTTP/1.1" 500 138282
+INFO 2025-11-13 22:32:55,438 autoreload C:\Users\Sander\Desktop\NuamExhange\App\views.py changed, reloading.
+INFO 2025-11-13 22:32:56,023 autoreload Watching for file changes with StatReloader
+ERROR 2025-11-13 22:32:58,837 log Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Sander\Desktop\NuamExhange\App\views.py", line 232, in home
+    return render(request, 'home.html', context)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\defaulttags.py", line 479, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\urls\resolvers.py", line 851, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'editar_usuario' with no arguments not found. 1 pattern(s) tried: ['editar/(?P<usuario_id>[0-9]+)/\\Z']
+ERROR 2025-11-13 22:32:58,841 basehttp "GET / HTTP/1.1" 500 137986
+ERROR 2025-11-13 22:33:01,731 log Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Sander\Desktop\NuamExhange\App\views.py", line 232, in home
+    return render(request, 'home.html', context)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\defaulttags.py", line 479, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\urls\resolvers.py", line 851, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'editar_usuario' with no arguments not found. 1 pattern(s) tried: ['editar/(?P<usuario_id>[0-9]+)/\\Z']
+ERROR 2025-11-13 22:33:01,733 basehttp "GET / HTTP/1.1" 500 138008
+INFO 2025-11-13 22:33:15,366 autoreload C:\Users\Sander\Desktop\NuamExhange\App\views.py changed, reloading.
+INFO 2025-11-13 22:33:15,993 autoreload Watching for file changes with StatReloader
+INFO 2025-11-13 22:33:33,850 autoreload C:\Users\Sander\Desktop\NuamExhange\App\urls.py changed, reloading.
+INFO 2025-11-13 22:33:34,430 autoreload Watching for file changes with StatReloader
+INFO 2025-11-13 22:33:38,730 basehttp "GET / HTTP/1.1" 200 16119
+INFO 2025-11-13 22:34:10,741 basehttp "GET / HTTP/1.1" 200 16136
+INFO 2025-11-13 22:34:22,609 views Plantilla descargada por ismael.guzman@inacapmail.cl
+INFO 2025-11-13 22:34:22,610 basehttp "GET /plantilla/ HTTP/1.1" 200 5322
+INFO 2025-11-13 22:34:22,967 views Plantilla descargada por habastible
+INFO 2025-11-13 22:34:22,969 basehttp "GET /plantilla/ HTTP/1.1" 200 5322
+INFO 2025-11-13 22:35:15,910 basehttp "GET /crear/ HTTP/1.1" 200 18106
+INFO 2025-11-13 22:35:20,810 basehttp "GET /usuarios/ HTTP/1.1" 200 20220
+ERROR 2025-11-13 22:35:31,409 log Internal Server Error: /eliminar-multiple/
+Traceback (most recent call last):
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Sander\Desktop\NuamExhange\App\views.py", line 513, in eliminar_multiples_usuarios
+    return render(request, "deletemulti.html", context)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: deletemulti.html
+ERROR 2025-11-13 22:35:31,412 basehttp "GET /eliminar-multiple/ HTTP/1.1" 500 94315
+INFO 2025-11-13 22:35:39,869 basehttp "GET / HTTP/1.1" 200 16119
+INFO 2025-11-13 22:35:42,727 basehttp "GET / HTTP/1.1" 200 16119
+INFO 2025-11-13 22:36:43,272 autoreload C:\Users\Sander\Desktop\NuamExhange\App\views.py changed, reloading.
+INFO 2025-11-13 22:36:44,025 autoreload Watching for file changes with StatReloader
+INFO 2025-11-13 22:36:44,875 basehttp "GET /eliminar-multiple/ HTTP/1.1" 200 22961
+INFO 2025-11-13 22:36:56,551 basehttp "GET / HTTP/1.1" 200 16119
+INFO 2025-11-13 22:36:56,826 basehttp "GET /eliminar-multiple/?page=2&q=&order_by=-created_at HTTP/1.1" 200 23041
+INFO 2025-11-13 22:48:45,447 autoreload C:\Users\Sander\Desktop\NuamExhange\App\models.py changed, reloading.
+INFO 2025-11-13 22:48:46,124 autoreload Watching for file changes with StatReloader
+INFO 2025-11-13 22:57:00,294 autoreload C:\Users\Sander\Desktop\NuamExhange\App\models.py changed, reloading.
+INFO 2025-11-13 22:57:00,848 autoreload Watching for file changes with StatReloader
+INFO 2025-11-13 22:57:08,254 basehttp "GET / HTTP/1.1" 200 16136
+INFO 2025-11-13 22:57:08,298 basehttp "GET /static/css/style.css HTTP/1.1" 304 0
+ERROR 2025-11-13 22:57:11,798 log Internal Server Error: /eliminar-multiple/
+Traceback (most recent call last):
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: no existe la columna App_usuario.rol
+LINE 1: ...io"."telefono", "App_usuario"."fecha_nacimiento", "App_usuar...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Sander\Desktop\NuamExhange\App\views.py", line 515, in eliminar_multiples_usuarios
+    return render(request, "deletemulti.html", context)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\defaulttags.py", line 198, in render
+    len_values = len(values)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\paginator.py", line 191, in __len__
+    return len(self.object_list)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 382, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\sql\compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: no existe la columna App_usuario.rol
+LINE 1: ...io"."telefono", "App_usuario"."fecha_nacimiento", "App_usuar...
+                                                             ^
+
+ERROR 2025-11-13 22:57:11,805 basehttp "GET /eliminar-multiple/ HTTP/1.1" 500 214489
+INFO 2025-11-13 22:58:20,902 autoreload C:\Users\Sander\Desktop\NuamExhange\App\views.py changed, reloading.
+INFO 2025-11-13 22:58:21,502 autoreload Watching for file changes with StatReloader
+INFO 2025-11-13 22:58:27,636 basehttp "GET / HTTP/1.1" 200 16119
+INFO 2025-11-13 22:58:27,916 basehttp "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-11-13 22:58:28,650 basehttp "GET / HTTP/1.1" 200 16119
+ERROR 2025-11-13 22:58:32,655 log Internal Server Error: /eliminar-multiple/
+Traceback (most recent call last):
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: no existe la columna App_usuario.rol
+LINE 1: ...io"."telefono", "App_usuario"."fecha_nacimiento", "App_usuar...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Sander\Desktop\NuamExhange\App\views.py", line 515, in eliminar_multiples_usuarios
+    return render(request, "deletemulti.html", context)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\defaulttags.py", line 198, in render
+    len_values = len(values)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\paginator.py", line 191, in __len__
+    return len(self.object_list)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 382, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\sql\compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: no existe la columna App_usuario.rol
+LINE 1: ...io"."telefono", "App_usuario"."fecha_nacimiento", "App_usuar...
+                                                             ^
+
+ERROR 2025-11-13 22:58:32,662 basehttp "GET /eliminar-multiple/ HTTP/1.1" 500 214743
+ERROR 2025-11-13 22:58:33,689 log Internal Server Error: /eliminar-multiple/
+Traceback (most recent call last):
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: no existe la columna App_usuario.rol
+LINE 1: ...io"."telefono", "App_usuario"."fecha_nacimiento", "App_usuar...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Sander\Desktop\NuamExhange\App\views.py", line 515, in eliminar_multiples_usuarios
+    return render(request, "deletemulti.html", context)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1000, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 961, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\defaulttags.py", line 198, in render
+    len_values = len(values)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\paginator.py", line 191, in __len__
+    return len(self.object_list)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 382, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\sql\compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Sander\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: no existe la columna App_usuario.rol
+LINE 1: ...io"."telefono", "App_usuario"."fecha_nacimiento", "App_usuar...
+                                                             ^
+
+ERROR 2025-11-13 22:58:33,694 basehttp "GET /eliminar-multiple/ HTTP/1.1" 500 214714
+INFO 2025-11-13 22:59:59,866 basehttp "GET /eliminar-multiple/ HTTP/1.1" 200 22961
+INFO 2025-11-13 23:00:14,425 basehttp "GET /crear/ HTTP/1.1" 200 18106
+INFO 2025-11-13 23:00:16,272 basehttp "GET /usuarios/ HTTP/1.1" 200 20220
+INFO 2025-11-13 23:07:06,463 basehttp "GET /eliminar-multiple/ HTTP/1.1" 200 22961
+INFO 2025-11-13 23:07:25,865 autoreload C:\Users\Sander\Desktop\NuamExhange\App\views.py changed, reloading.
+INFO 2025-11-13 23:07:26,526 autoreload Watching for file changes with StatReloader
+INFO 2025-11-13 23:07:36,729 autoreload C:\Users\Sander\Desktop\NuamExhange\App\views.py changed, reloading.
+INFO 2025-11-13 23:07:37,218 autoreload Watching for file changes with StatReloader
+INFO 2025-11-13 23:07:52,505 basehttp "GET /eliminar-multiple/ HTTP/1.1" 200 22944
+INFO 2025-11-13 23:07:53,129 basehttp "GET / HTTP/1.1" 200 16119
+INFO 2025-11-13 23:08:00,743 basehttp "GET /eliminar-multiple/ HTTP/1.1" 200 22944
+INFO 2025-11-13 23:08:12,721 basehttp "GET / HTTP/1.1" 200 16119
