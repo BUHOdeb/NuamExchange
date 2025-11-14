@@ -11,3 +11,4 @@ class UsuarioAdmin(admin.ModelAdmin):
 @admin.register(ImportAudit)
 class ImportAuditAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'uploaded_at', 'filename')
+    # App/admin.py

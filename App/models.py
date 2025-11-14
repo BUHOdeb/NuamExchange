@@ -1,51 +1,104 @@
-# App/models.py - MEJORADO
+# App/models.py
+"""
+Modelos del sistema NuamExchange
+Define las estructuras de datos para usuarios, auditorías e históricos
+"""
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
+from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
-import re
+from django.contrib.auth.models import User
 
-'''
-Validadores personalizados en formato estandar 
-para evitar incongruencia en la base de datos y por ende sea masconfiable nuestro nucleo de verdad
-'''
+
+# ==================== VALIDADORES PERSONALIZADOS ====================
+
+# Validador de teléfono: acepta formato internacional
+# Ejemplo: +56912345678
 phone_regex = RegexValidator(
     regex=r'^\+?1?\d{9,15}$',
     message="Formato de teléfono inválido. Use: +56912345678"
 )
 
 def validate_edad(value):
+    """
+    Valida que la edad esté en un rango válido (0-150 años)
+    
+    Args:
+        value: Valor de edad a validar
+    
+    Raises:
+        ValidationError: Si la edad no está en el rango
+    """
     if value < 0 or value > 150:
         raise ValidationError('La edad debe estar entre 0 y 150 años')
 
+
 def validate_email_domain(value):
-    """Validar que el email no sea de dominios temporales"""
-    dominios_bloqueados = ['tempmail.com', 'throwaway.email', '10minutemail.com']
-    domain = value.split('@')[1].lower()
-    if domain in dominios_bloqueados:
-        raise ValidationError('No se permiten emails temporales')
+    """
+    Valida que el email no sea de dominios temporales bloqueados
+    
+    Args:
+        value: Email a validar
+    
+    Raises:
+        ValidationError: Si el dominio está bloqueado
+    """
+    # Lista de dominios temporales no permitidos
+    dominios_bloqueados = [
+        'tempmail.com', 
+        'throwaway.email', 
+        '10minutemail.com',
+        'guerrillamail.com',
+        'mailinator.com'
+    ]
+    
+    try:
+        domain = value.split('@')[1].lower()
+        if domain in dominios_bloqueados:
+            raise ValidationError('No se permiten emails temporales')
+    except IndexError:
+        raise ValidationError('Email inválido')
+
+
+# ==================== MODELO USUARIO ====================
 
 class Usuario(models.Model):
     """
-    Modelo de Usuario del sistema - NO usar para autenticación
-    Usar django.contrib.auth.models.User para login
+    Modelo principal de Usuario del sistema
+    
+    IMPORTANTE: Este modelo NO se usa para autenticación (login/password)
+    Para autenticación usar django.contrib.auth.models.User
+    
+    Este modelo almacena información adicional de usuarios del negocio
     """
+    user = models.OneToOneField(
+        User,
+        on_delete= models.CASCADE,
+        null=True,
+        blank=True,
+    )
+
+
+    # Nombre del usuario
     first_name = models.CharField(
         max_length=50,
         verbose_name='Nombre',
         help_text='Nombre del usuario'
     )
     
+    # Apellido del usuario
     last_name = models.CharField(
         max_length=50,
         verbose_name='Apellido',
         help_text='Apellido del usuario'
     )
     
+    # Edad del usuario (opcional)
+    # PositiveIntegerField no permite números negativos automáticamente
     edad = models.PositiveIntegerField(
         null=True,
         blank=True,
@@ -54,47 +107,82 @@ class Usuario(models.Model):
         help_text='Edad en años (0-150)'
     )
     
+
+    # Email único en el sistema
+    # Se valida formato y dominio
     email = models.EmailField(
         max_length=254,
-        unique=True,
+        unique=True,  # No puede haber dos usuarios con el mismo email
         validators=[validate_email_domain],
         verbose_name='Email',
         help_text='Correo electrónico único'
     )
     
+    password = models.CharField(
+        max_length=128,
+        verbose_name='Password',
+        help_text='Contraseña (minimo 6 caracteres)',
+        null=True,
+        )
+
+    # Teléfono del usuario (opcional)
+    # Valida formato internacional
     telefono = models.CharField(
         max_length=30,
         blank=True,
         null=True,
-        unique=True,
+        unique=True,  # No puede haber dos usuarios con el mismo teléfono
         validators=[phone_regex],
         verbose_name='Teléfono',
         help_text='Formato: +56912345678'
     )
     
+    # Fecha de nacimiento (opcional)
     fecha_nacimiento = models.DateField(
         null=True,
         blank=True,
         verbose_name='Fecha de Nacimiento'
     )
-
     
-    # Campos de auditoría
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    # ===== CAMPOS DE AUDITORÍA =====
+    
+    # Fecha de creación del registro (se asigna automáticamente)
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Fecha de Creación'
+    )
+    
+    # Fecha de última actualización (se actualiza automáticamente)
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name='Última Actualización'
+    )
+    
+    # Usuario que creó este registro
+    # Si el usuario se elimina, este campo se pone en NULL
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='usuarios_creados'
+        related_name='usuarios_creados',
+        verbose_name='Creado Por'
     )
-    is_active = models.BooleanField(default=True)
+    
+    # Soft delete: en lugar de eliminar, marcamos como inactivo
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name='Activo',
+        help_text='Usuario activo en el sistema'
+    )
     
     class Meta:
+        # Ordenar por fecha de creación descendente (más recientes primero)
         ordering = ['-created_at']
         verbose_name = "Usuario"
         verbose_name_plural = "Usuarios"
+        
+        # Índices para mejorar rendimiento en búsquedas
         indexes = [
             models.Index(fields=['email']),
             models.Index(fields=['telefono']),
@@ -102,48 +190,71 @@ class Usuario(models.Model):
         ]
     
     def __str__(self):
+        """Representación en string del usuario"""
         return f"{self.first_name} {self.last_name} <{self.email}>"
     
     def clean(self):
-        """Validaciones personalizadas"""
+        """
+        Validaciones personalizadas antes de guardar
+        Se ejecuta al llamar full_clean() o al guardar con validación
+        """
         super().clean()
         
-        # Normalizar email
+        # Normalizar email: convertir a minúsculas y quitar espacios
         if self.email:
             self.email = self.email.lower().strip()
         
         # Validar teléfono chileno
         if self.telefono:
             self.telefono = self.telefono.strip()
+            # Verificar que empiece con +56 o 56
             if not self.telefono.startswith('+56') and not self.telefono.startswith('56'):
-                raise ValidationError({'telefono': 'El teléfono debe ser chileno (+56)'})
+                raise ValidationError({
+                    'telefono': 'El teléfono debe ser chileno (+56)'
+                })
         
         # Validar fecha de nacimiento
         if self.fecha_nacimiento:
             from datetime import date
+            
+            # No puede ser fecha futura
             if self.fecha_nacimiento > date.today():
-                raise ValidationError({'fecha_nacimiento': 'La fecha no puede ser futura'})
+                raise ValidationError({
+                    'fecha_nacimiento': 'La fecha no puede ser futura'
+                })
             
             # Calcular edad automáticamente si no existe
             if not self.edad:
                 today = date.today()
                 self.edad = today.year - self.fecha_nacimiento.year - (
-                    (today.month, today.day) < (self.fecha_nacimiento.month, self.fecha_nacimiento.day)
+                    (today.month, today.day) < 
+                    (self.fecha_nacimiento.month, self.fecha_nacimiento.day)
                 )
     
     def save(self, *args, **kwargs):
+        """
+        Sobrescribir save para ejecutar validaciones
+        """
+        # Ejecutar validaciones antes de guardar
         self.full_clean()
         super().save(*args, **kwargs)
 
 
+# ==================== MODELO AUDITORÍA DE IMPORTACIONES ====================
+
 class ImportAudit(models.Model):
-    """Auditoría de importaciones Excel"""
-    STATUS_PENDING = 'PENDING'
-    STATUS_VALIDATED = 'VALIDATED'
-    STATUS_IMPORTING = 'IMPORTING'
-    STATUS_IMPORTED = 'IMPORTED'
-    STATUS_CANCELLED = 'CANCELLED'
-    STATUS_FAILED = 'FAILED'
+    """
+    Auditoría de importaciones de archivos Excel
+    Registra cada carga de archivo y su resultado
+    """
+    
+    # Estados posibles de una importación
+    STATUS_PENDING = 'PENDING'        # Archivo cargado, pendiente de validar
+    STATUS_VALIDATED = 'VALIDATED'    # Archivo validado, listo para importar
+    STATUS_IMPORTING = 'IMPORTING'    # Importación en proceso
+    STATUS_IMPORTED = 'IMPORTED'      # Importación completada exitosamente
+    STATUS_CANCELLED = 'CANCELLED'    # Importación cancelada por usuario
+    STATUS_FAILED = 'FAILED'          # Importación falló
     
     STATUS_CHOICES = [
         (STATUS_PENDING, 'Pendiente revisión'),
@@ -154,6 +265,7 @@ class ImportAudit(models.Model):
         (STATUS_FAILED, 'Falló'),
     ]
     
+    # Usuario que subió el archivo
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -162,25 +274,74 @@ class ImportAudit(models.Model):
         verbose_name='Usuario'
     )
     
-    uploaded_at = models.DateTimeField(default=timezone.now)
+    # Fecha de carga del archivo
+    uploaded_at = models.DateTimeField(
+        default=timezone.now,
+        verbose_name='Fecha de Carga'
+    )
     
-    file = models.FileField(upload_to='imports/%Y/%m/', null=True, blank=True)
+    # Archivo subido (se guarda en media/imports/YYYY/MM/)
+    file = models.FileField(
+        upload_to='imports/%Y/%m/',
+        null=True,
+        blank=True,
+        verbose_name='Archivo'
+    )
     
-    filename = models.CharField(max_length=255, blank=True)
+    # Nombre del archivo
+    filename = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name='Nombre del Archivo'
+    )
     
-    row_count = models.PositiveIntegerField(default=0)
+    # Estadísticas de la importación
+    row_count = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Total de Filas',
+        help_text='Total de filas en el archivo'
+    )
     
-    imported_count = models.PositiveIntegerField(default=0)
+    imported_count = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Registros Creados',
+        help_text='Cantidad de usuarios nuevos creados'
+    )
     
-    updated_count = models.PositiveIntegerField(default=0)
+    updated_count = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Registros Actualizados',
+        help_text='Cantidad de usuarios existentes actualizados'
+    )
     
-    error_count = models.PositiveIntegerField(default=0)
+    error_count = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Errores',
+        help_text='Cantidad de filas con errores'
+    )
     
-    errors = models.JSONField(default=list, blank=True)
+    # Lista de errores en formato JSON
+    # Ejemplo: [{"row": 5, "errors": ["Email inválido"]}, ...]
+    errors = models.JSONField(
+        default=list,
+        blank=True,
+        verbose_name='Detalle de Errores'
+    )
     
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
+    # Estado actual de la importación
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default=STATUS_PENDING,
+        verbose_name='Estado'
+    )
     
-    processing_time = models.DurationField(null=True, blank=True)
+    # Tiempo que tomó procesar el archivo
+    processing_time = models.DurationField(
+        null=True,
+        blank=True,
+        verbose_name='Tiempo de Procesamiento'
+    )
     
     class Meta:
         ordering = ['-uploaded_at']
@@ -191,35 +352,51 @@ class ImportAudit(models.Model):
         return f"Import {self.id} - {self.status} - {self.uploaded_at.date()}"
 
 
+# ==================== MODELO HISTÓRICO DE USUARIOS ====================
+
 class UsuarioHistorico(models.Model):
-    """Histórico de cambios en usuarios"""
+    """
+    Histórico de cambios en usuarios
+    Guarda una copia de los datos cada vez que se modifica un usuario
+    """
+    
+    # Usuario al que pertenece este histórico
     usuario = models.ForeignKey(
         Usuario,
-        on_delete=models.CASCADE,
-        related_name='historicos'
+        on_delete=models.CASCADE,  # Si se elimina el usuario, se eliminan sus históricos
+        related_name='historicos',
+        verbose_name='Usuario'
     )
     
-    first_name = models.CharField(max_length=100)
+    # Datos históricos (copia del estado anterior)
+    first_name = models.CharField(max_length=100, verbose_name='Nombre')
+    last_name = models.CharField(max_length=100, verbose_name='Apellido')
+    edad = models.PositiveIntegerField(null=True, blank=True, verbose_name='Edad')
+    email = models.EmailField(max_length=254, verbose_name='Email')
+    telefono = models.CharField(max_length=30, blank=True, null=True, verbose_name='Teléfono')
+    fecha_nacimiento = models.DateField(null=True, blank=True, verbose_name='Fecha Nacimiento')
     
-    last_name = models.CharField(max_length=100)
+    # Fecha de modificación
+    modified_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Fecha de Modificación'
+    )
     
-    edad = models.PositiveIntegerField(null=True, blank=True)
-    
-    email = models.EmailField(max_length=254)
-    
-    telefono = models.CharField(max_length=30, blank=True, null=True)
-    
-    fecha_nacimiento = models.DateField(null=True, blank=True)
-    
-    modified_at = models.DateTimeField(auto_now_add=True)
-    
+    # Usuario que hizo la modificación
     modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
-        blank=True
+        blank=True,
+        verbose_name='Modificado Por'
     )
-    change_reason = models.TextField(blank=True, null=True)
+    
+    # Razón del cambio (opcional)
+    change_reason = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name='Razón del Cambio'
+    )
     
     class Meta:
         ordering = ['-modified_at']
@@ -230,29 +407,72 @@ class UsuarioHistorico(models.Model):
         return f"Histórico de {self.usuario} - {self.modified_at}"
 
 
+# ==================== MODELO PERFIL DE USUARIO (ROLES) ====================
+
 class UserProfile(models.Model):
-    """Perfil extendido para sistema de roles"""
+    """
+    Perfil extendido para el sistema de roles
+    Se relaciona uno-a-uno con django.contrib.auth.models.User
+    """
+    
+    # Opciones de roles en el sistema
     ROLE_CHOICES = [
-        ('Admin', 'Administrador'),
-        ('Manager', 'Gerente'),
-        ('Employee', 'Empleado'),
+        ('Admin', 'Administrador'),      # Acceso completo al sistema
+        ('Manager', 'Gerente'),          # Puede gestionar usuarios
+        ('Employee', 'Empleado'),        # Acceso básico
     ]
     
+    # Relación uno a uno con User de Django
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
-        related_name='profile'
+        related_name='profile',
+        verbose_name='Usuario'
     )
+    
+    # Rol del usuario en el sistema
     role = models.CharField(
         max_length=20,
         choices=ROLE_CHOICES,
-        default='Employee'
+        default='Employee',
+        verbose_name='Rol'
     )
-    phone = models.CharField(max_length=20, blank=True, null=True)
-    department = models.CharField(max_length=100, blank=True, null=True)
-    hire_date = models.DateField(auto_now_add=True)
-    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
-    is_verified = models.BooleanField(default=False)
+    
+    # Teléfono del perfil
+    phone = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True,
+        verbose_name='Teléfono'
+    )
+    
+    # Departamento al que pertenece
+    department = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name='Departamento'
+    )
+    
+    # Fecha de contratación
+    hire_date = models.DateField(
+        auto_now_add=True,
+        verbose_name='Fecha de Contratación'
+    )
+    
+    # Avatar del usuario (opcional)
+    avatar = models.ImageField(
+        upload_to='avatars/',
+        blank=True,
+        null=True,
+        verbose_name='Avatar'
+    )
+    
+    # Si el usuario está verificado
+    is_verified = models.BooleanField(
+        default=False,
+        verbose_name='Verificado'
+    )
     
     def __str__(self):
         return f"{self.user.username} - {self.role}"
@@ -262,21 +482,60 @@ class UserProfile(models.Model):
         verbose_name_plural = 'Perfiles de Usuarios'
 
 
-# Signals
+# ==================== SEÑALES (SIGNALS) ====================
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
+    """
+    Señal: Crear perfil automáticamente cuando se crea un User
+    
+    Args:
+        sender: Modelo que envió la señal (User)
+        instance: Instancia del User creado
+        created: True si es un nuevo registro
+    """
     if created:
         UserProfile.objects.create(user=instance)
 
+
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
+    """
+    Señal: Guardar perfil cuando se guarda un User
+    
+    Args:
+        sender: Modelo que envió la señal (User)
+        instance: Instancia del User guardado
+    """
+    # Verificar que el perfil existe antes de guardarlo
     if hasattr(instance, 'profile'):
         instance.profile.save()
 
+
+@receiver(post_save, sender=Usuario)
+def create_autenticado(sender, instance, created, **kwargs):
+    if created and instance.email:
+        user = User.objects.create_user(
+            nombre_usuario=instance.email,
+            email=instance.email,
+            password="1234"
+        )
+    instance.user = user
+    instance.save()
+
 @receiver(post_save, sender=Usuario)
 def create_usuario_historico(sender, instance, created, **kwargs):
-    """Crear histórico cada vez que se modifica un usuario"""
-    if not created:  # Solo para actualizaciones
+    """
+    Señal: Crear histórico cada vez que se actualiza un usuario
+    NO se crea histórico cuando es un nuevo usuario
+    
+    Args:
+        sender: Modelo que envió la señal (Usuario)
+        instance: Instancia del Usuario guardado
+        created: True si es un nuevo registro
+    """
+    # Solo crear histórico para actualizaciones (no para nuevos registros)
+    if not created:
         UsuarioHistorico.objects.create(
             usuario=instance,
             first_name=instance.first_name,
@@ -286,3 +545,4 @@ def create_usuario_historico(sender, instance, created, **kwargs):
             telefono=instance.telefono,
             fecha_nacimiento=instance.fecha_nacimiento
         )
+# App/models.py

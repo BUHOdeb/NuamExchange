@@ -1,0 +1,74 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="delete-multi-container">
+
+    <h1>🗑️ Eliminación Múltiple de Usuarios</h1>
+
+    <form method="GET">
+        <input type="text" name="q" value="{{ query }}" placeholder="Buscar usuarios…">
+        <button type="submit">Buscar</button>
+    </form>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <table class="table-users">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="select-all"></th>
+                    <th><a href="?order_by=first_name">Nombre</a></th>
+                    <th><a href="?order_by=last_name">Apellido</a></th>
+                    <th><a href="?order_by=edad">Edad</a></th>
+                    <th><a href="?order_by=email">Email</a></th>
+                    <th><a href="?order_by=telefono">Teléfono</a></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for u in usuarios %}
+                <tr>
+                    <td><input type="checkbox" name="usuarios" value="{{ u.id }}"></td>
+                    <td>{{ u.first_name }}</td>
+                    <td>{{ u.last_name }}</td>
+                    <td>{{ u.edad }}</td>
+                    <td>{{ u.email }}</td>
+                    <td>{{ u.telefono }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No hay usuarios</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn btn-danger">🗑️ Eliminar Seleccionados</button>
+        <a href="{% url 'listar_usuarios' %}" class="btn btn-secondary">Cancelar</a>
+
+    </form>
+
+    <!-- PAGINACIÓN -->
+    <div class="pagination">
+        {% if usuarios.has_previous %}
+            <a href="?page={{ usuarios.previous_page_number }}&q={{ query }}&order_by={{ order_by }}">Anterior</a>
+        {% endif %}
+
+        <span>Página {{ usuarios.number }} de {{ usuarios.paginator.num_pages }}</span>
+
+        {% if usuarios.has_next %}
+            <a href="?page={{ usuarios.next_page_number }}&q={{ query }}&order_by={{ order_by }}">Siguiente</a>
+        {% endif %}
+    </div>
+
+</div>
+
+<script>
+document.getElementById("select-all").addEventListener("change", function() {
+    document.querySelectorAll("input[name='usuarios']").forEach(cb => cb.checked = this.checked);
+});
+</script>
+
+{% endblock %}

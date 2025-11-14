@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registro | NuamExchange</title>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Amazon Ember", "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+body {
+    background: #f2f3f5;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    padding-top: 40px;
+}
+
+/* Contenedor */
+.register-container {
+    width: 430px;
+    background: white;
+    padding: 35px 40px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 22px rgba(0, 0, 0, 0.08);
+    animation: fadeIn 0.4s ease;
+}
+
+/* Animación */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+.register-header h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #232f3e;
+    text-align: center;
+}
+
+.register-header p {
+    text-align: center;
+    color: #4b5563;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+/* Formularios */
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+    color: #374151;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    background: #f9fafb;
+    transition: 0.2s;
+}
+
+input:focus {
+    border-color: #0073bb;
+    box-shadow: 0 0 0 3px rgba(0, 115, 187, 0.25);
+    background: #fff;
+}
+
+/* Dos columnas */
+.form-row {
+    display: flex;
+    gap: 10px;
+}
+
+.form-row .half {
+    flex: 1;
+}
+
+/* Password */
+.password-wrapper {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #6b7280;
+}
+
+/* Botón */
+.btn-register {
+    width: 100%;
+    background: #0073bb;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.btn-register:hover {
+    background: #005f99;
+}
+
+/* Footer */
+.register-footer {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 0.9rem;
+}
+
+.register-footer a {
+    color: #0073bb;
+}
+
+/* Alertas Django */
+.alert {
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+}
+
+.alert-error {
+    background: #fdecea;
+    border-left: 4px solid #d93025;
+}
+
+.alert-success {
+    background: #e6f9f0;
+    border-left: 4px solid #1ea97c;
+}
+
+    </style>
+</head>
+
+<body>
+
+    <div class="register-container">
+
+        <div class="register-header">
+            <h1>📝 Crear Cuenta</h1>
+            <p>Regístrate para acceder al sistema</p>
+        </div>
+
+        <!-- Alertas Django -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="username">Nombre de Usuario</label>
+                <input type="text" name="username" id="username" placeholder="usuario123" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Correo Electrónico</label>
+                <input type="email" name="email" id="email" placeholder="correo@ejemplo.com" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group half">
+                    <label for="first_name">Nombre</label>
+                    <input type="text" name="first_name" id="first_name" placeholder="Juan" required>
+                </div>
+
+                <div class="form-group half">
+                    <label for="last_name">Apellido</label>
+                    <input type="text" name="last_name" id="last_name" placeholder="Pérez" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <div class="password-wrapper">
+                    <input type="password" name="password" id="password" placeholder="••••••••" required>
+                    <button type="button" class="toggle-password" onclick="togglePassword('password', this)">👁️</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password2">Confirmar Contraseña</label>
+                <div class="password-wrapper">
+                    <input type="password" name="password2" id="password2" placeholder="••••••••" required>
+                    <button type="button" class="toggle-password" onclick="togglePassword('password2', this)">👁️</button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-register">
+                Crear Cuenta
+            </button>
+
+            <div class="register-footer">
+                <p>¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a></p>
+            </div>
+        </form>
+
+    </div>
+
+    <script>
+        function togglePassword(id, btn) {
+            const field = document.getElementById(id);
+            if (field.type === "password") {
+                field.type = "text";
+                btn.textContent = "🙈";
+            } else {
+                field.type = "password";
+                btn.textContent = "👁️";
+            }
+        }
+    </script>
+
+</body>
+</html>
